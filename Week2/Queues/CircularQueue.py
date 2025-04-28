@@ -6,32 +6,39 @@ class MyCircularQueue:
         self.rr = -1
         self.k = k
 
-    def enQueue(self, value: int) -> bool:
-        # self.fr = (self.fr +1)%self.k
-        # if not ((self.rr == self.fr + self.k) or (self.rr == self.fr)):
-        #     self.cirQ[self.fr] = value
-        #     return True
-        # else:
-        #     return False
-
-    def deQueue(self) -> bool:        
-        # if self.rr <= self.fr:
-        #     self.rr = (self.fr -1)%self.k
-        #     return True
-        # else:
-        #     return False
-
-    def Front(self) -> int:
-        return self.cirQ[(self.fr)%(self.k)]
-
-    def Rear(self) -> int:
-        return self.cirQ[(self.rr)%(self.k)]
-
     def isEmpty(self) -> bool:
-        return self.rr > self.fr
+        return max(self.cirQ) == -1
 
     def isFull(self) -> bool:
-        return (self.rr == self.fr + self.k) or (self.rr == self.fr)
+        return self.cirQ[(self.fr-1)%(self.k)] != -1
+
+    def enQueue(self, value: int) -> bool:
+        if self.isFull():
+            return False
+        else:
+            if self.fr == -1 and self.rr == -1:
+                self.fr += 1
+            self.rr = (self.rr+1)%(self.k)
+            self.cirQ[self.rr] = value
+            return True
+
+    def deQueue(self) -> bool:        
+        if self.isEmpty():
+            return False
+        else:
+            self.cirQ[self.fr] = -1
+            self.fr = (self.fr+1)%(self.k)
+            return True
+
+    def Front(self) -> int:
+        if self.isEmpty():
+            return -1
+        return self.cirQ[self.fr]
+
+    def Rear(self) -> int:
+        if self.isEmpty():
+            return -1
+        return self.cirQ[self.rr]
 
 
 # Your MyCircularQueue object will be instantiated and called as such:
